@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>2) Менеджер (inline)</title>
+  <style>
+:root{
+  --bg:#F6F8FC;
+  --panel:#FFFFFF;
+  --panel2:#F2F6FF;
+  --stroke:rgba(15,23,42,0.12);
+  --text:#0F172A;
+  --muted:rgba(15,23,42,0.65);
+  --brand:#0EA5A4;
+  --danger:#EF4444;
+  --warn:#F59E0B;
+  --ok:#10B981;
+  --chipBg:rgba(15,23,42,0.04);
+  --r-sm:10px; --r-md:14px; --r-lg:18px;
+  --shadow:0 16px 40px rgba(15,23,42,0.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;
+}
+.page{ padding:28px; display:grid; gap:24px; }
+.artboard{
+  width:1440px; height:900px;
+  border:1px solid var(--stroke);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,0));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.shell{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  grid-template-rows:64px 1fr;
+  height:100%;
+}
+.topbar{
+  grid-column:1/3;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 18px;
+  background:rgba(255,255,255,.86);
+  border-bottom:1px solid var(--stroke);
+}
+.brand{ display:flex; align-items:center; gap:10px; font-weight:750; }
+.logo{
+  width:110px; height:34px;
+  border-radius:0;
+  border:none;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAAAiCAYAAAC+wezsAAAK5klEQVR42u2aW2xVVRrHf2vtS+nxtNyqBSqaJpZgCeClQzqaiNEgNZZEfZgIvhhx0AcyQuzLJF4SRx4aCj50fIBETNDEB4M+WE1FeKFOIe14wbEDCRCKsYXRWnpse2778s3D6V6e9pzeAFFjv2Rnn7P2t7+99vdf33VtRRESEWESktx1FFdASl3ZfX9wUkoVqM2ejQBBUCiKyJmVFObgu2qaMXCBCFrB7lM9fPK/H4jbNiEysxUD+CIssG3+eVcdC0vcOfiuF3AioJTiP8PDHL30PWWuSyBioFPTAJcV4SbXJZRgTuvXEzhUzkZKtUOp41DuOASTh8JxFqUAT4Qy20HNmdl1Bm6MQoRAfj4E0Aq00jlsAVGgRfAlBHIJSSBCKDKn8V8LuImkFaSCkJSfNSYmgItF3NUwh9VvDzitFKOBz58XLqZx2VICBAQsBRdSoxw4fwFX61yAnKPfEHDkrO1PC8r424rbxl37b2KI/ecu4Oo5Jf8mXaUCUmGIPxbzACylGPK8uXT/twScVgpr7FBjINko7LyuiKVy/yO+XFKD+T1H1xM4UaBg1PdIeR6Xx4DKeBlGQq+APRvCkOeRlhBEyIrgKDVXdl9v4JQSQoF1Cxcy4oeU2TYIDAceaxYsKCjCF7guf7m5CkfnRn2Bcltjq7mgdy1IFe+SFE8DQxH0Vbo7kRA1B97sQLraJrNWyuwOTBBcdAUUK7j1HGi/TnKiRArqMpVDrzjvRM4pDDYMw6kXjtYFvEqN360QEbOwomv5YzOVn/+cfHnFeKabe/4c8+cymaxr7ir/SB39IAjQWhdsYUUAXY3Sr6urFMn1G7PfDxKMjqLGJh4GPro8zg03VYwDNZ0cJdP/A5a2ESUogVAr5lUtwXWsgiUQhiF9fX14nld0v08pRVVVFY7jkEwmuXjxIkop4vE4N954o+FJJpNcunQJgIqKCsrLy0kkEvz444+T7iOKCLZtc/PNN6O1JggCLMsCoKenhwsXLmDbNjU1NVRXV5v5RuBls1n6+vomle26LlVVVQB89913eJ6HZVlUVVVh2/a1Q1iKUOh7EorI6b/+XTpKbpPjN9XJ8co6OebeJqd2/iPH5PkS+oGIiAx0fiEd8VVyvOIu6ay4SzrLV8vx29ZLcnBoTGA4dsqdfd+XVatWieM4UlpaKrFYTGKxmMybN08cx5GKigrp7+8XEZFjx46J4zjiOI48/fTTIiKSyWQkDENpaGgw1959910REdm/f784jmPkRbLz5dfU1BgZIiJHjx6Ve++9VxzHkTFnI/F4XB5//HE5c+ZM7nU9T0REent7paysTFzXHSc/kl1XV2f4a2trxXEcqaqqksHBwXE6mIyuKsaJKDRgBR5WJovleYAmyHroMDCu9GfBGjvrobU1Vtj5KN9nsq5zGIakUik8z8PzCuvCdDo9bhVHPNHZdV327t1Le3s7tm3j+z5BEBjZnucRhqEZK6g7s1mCIMB1Xd577z2eeOKJgrg1MjLC+++/z/Hjxzly5Ai33367sfRMJkM2my0qO5PJjHuO53mk02kT76I4alnWjL8umLWdilKI1og1VkwrjRR7mAKxrJ/5LA1aTxojPc/D932UUlRWVtLU1ITWmj179tDf31/gUqIXjJR78uRJXnzxRWzbNslAxJOfpDz88MM89NBDiAjpdJrm5mZ++uknlFKUlJTQ19fHM888YxKIxsZGtmzZQiKRoLW1ldOnT3Px4kW2bt1KR0cHtm0ThiG2beN5HqtXr+app57i8uXLtLS0kE6njdsFDDiWZeG6rvmdv4BnEj/tK/SlPxtO3odDamLWY/jGMtEpMrtUKkUymUREqKio4IUXXgDg4MGDReNHpNjopbdu3UoqlTJjEz1MtLrvv/9+duzYYcZbW1tJJBJGYe+8844BsrGxkQ8//NDwPvbYY9TV1dHX18eJEyfo7OzkvvvuI5lM4vs+IsKqVavYuXMniUSC119/vWAeQRAgIiQSCR588EFs2yYej7Nu3Tq2bdvG8uXLcx9jTWN51yQ1ClGEQDB2hDDWcJaZxFMABgYGGBoaAuCGG27A931zTEWLFi2itbWVzz//HMuyWLp06ZSp/+joqJE7ODg4LtUH6O7uNtb57LPPIiJkMhnS6TSVlZVs3rzZKLa7uxuAoaEh4yajuQ8MDEw570wmQ1dXF52dnRw+fJjXXnuN+vp6enp6ZlQaXVVKI0GAHY8z/MEnfHniS9RYrFNKEyTTWK6dU8wUqyfy7+fOnTMgLV++3ChvulrpyJEjxiI3bdrEmjVrePXVV6es1SK3Wyyjy2az5rmxWMxYYhSLysrKCuLit99+a8ZqamqwbXuc+yvm4svLy2lqaqKkpITDhw/T0dFBf38/L7/8MocOHfplgUMEbIvwx0GCi9+Pd5aWQpW40xqd1hqtNSdOnDBj69evNy8enZVSRmn5Bew333yDUorS0lLeeOMN3nrrrSvNpAFYsWKFGTt06BAPPPDAOBDa2trMoqqtrcWyLD777DNzfe3ateMAmgy40tJSXnrpJQC2b9/OkiVL8H2fU6dOmURlKpd59UWECNguyikprNYlnPb2bDbL119/zQcffGBerLS0lK6uLkSEZDKZa1L7Ph0dHWzYsGGcIh3HwfM8du3axbJly0gkElda5CIibN68mT179mDbNvv27aOyspInn3ySVCrF7t276erqAuCWW25hw4YNvPnmmxw8eBCtNQsWLKCurm5GBbrv+3R3dzN//nza29vJZDIopYjFYmYuU8W52be8tAbLRlnWDPooVqQVCMPcPSYbFLSl6O/vp76+3kzUsiy2bdtmXEWUJQ4PD9PY2Ehvby+xWAzLsnAch3Q6zcaNG9mxY4cpdvOtNDpHYxMValmWyfAymQx33303TU1NtLS0APDKK6/Q3NxcUKbs27cP13XZvn27KVUeffRRFi9ebJ4Tyc5faNFcRkZGWL9+vUnMItqyZYsJC5O52ysCzhsZJesPIoMggT/T5YyEHtrRSCh5Jpl7Qdd1TWyZmIzk/496hVGNFgQB8+fPZ//+/YgIWmtSqZSp1aKEIZ1Om7F8JYVhyOXLlwmCgKGhIbPSd+/eTTwep6WlhZGREWP1ANXV1ezdu5eGhgYGBgbM4qivr2fXrl0mJgZBYKw/3wsMDQ2ZuedTLBbjueee4/nnn58WtFn1KiUUlFYk/vVvUmcvoFx35h8BKSAUmOeyqPEBnJIS84K9vb3U1taSyWRYunQpzc3NRoFhGOI4Dm+//Tbt7e1orenp6aGiooKPPvoIpRQrV66krq7OtKm++uork5ndc889VFdXc+bMGeN6165dy+rVqw2wbW1tpFIp4vE4mzZtMomIUorz58/z6aefcvbsWVzX5Y477qChoYF4PE4YhmSzWQ4cOMCyZct45JFHcBzH3JtMJvn444/xPI9FixaxceNGwjCkra2N4eHhcbVlWVkZa9as4dZbb51xr3LGLa9rTUGQa42dO3dOlFICyLp164ry7ty507SdTp48WdiOm6ZldCXk+/6sr13tPCKdzKTlNavdgZzlhTnrme02wdjWgprgAtLpNF988QWe57F48WJWrlxZcGtvby99fX1YlsWdd95JLBYzribKSvPdXxQfoy6FiEzKHxXEEzsYE2Xlu+p8A4i6PcV2EorJjsaKbftMltAUs7hZAzdHv8Md8F9y72uqjcr8zczpgvYfBsw5i/t9Wtz/Ac2Ykn5cl5HjAAAAAElFTkSuQmCC') center/contain no-repeat;
+}
+.user{ display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12px; }
+.avatar{ width:28px; height:28px; border-radius:10px; background:rgba(255,255,255,.95); border:1px solid var(--stroke); }
+.sidenav{
+  background:rgba(15,23,42,.02);
+  border-right:1px solid var(--stroke);
+  padding:14px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.navtitle{ color:var(--muted); font-size:12px; margin:8px 10px; }
+.navitem{
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid transparent;
+  color:var(--muted);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.navitem.active{
+  color:var(--text);
+  background:rgba(14,165,164,.10);
+  border-color:rgba(14,165,164,.25);
+}
+.badge{
+  font-size:12px; padding:2px 8px; border-radius:999px;
+  background:rgba(14,165,164,.10);
+  border:1px solid var(--stroke);
+  color:var(--muted);
+}
+.content{ padding:18px; overflow:auto; }
+.h1{ font-size:24px; font-weight:800; margin:0 0 14px 0; }
+.card{
+  background:rgba(255,255,255,.82);
+  border:1px solid var(--stroke);
+  border-radius:18px;
+  padding:14px;
+}
+.btnrow{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+.btn{
+  padding:10px 12px; border-radius:12px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.95);
+  color:var(--text);
+  font-weight:650;
+}
+.btn.primary{
+  border-color:rgba(14,165,164,.35);
+  background:rgba(14,165,164,.14);
+}
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  background:var(--chipBg);
+  border:1px solid var(--stroke);
+  color:var(--muted);
+  font-size:12px;
+}
+.dot{ width:8px; height:8px; border-radius:999px; background:var(--muted); }
+.dot.ok{ background:var(--ok); }
+.dot.warn{ background:var(--warn); }
+.table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid var(--stroke);
+}
+.table th, .table td{
+  padding:10px 10px;
+  border-bottom:1px solid var(--stroke);
+  font-size:12px;
+  color:var(--muted);
+  vertical-align:top;
+}
+.table th{
+  color:rgba(15,23,42,.92);
+  background:rgba(14,165,164,.10);
+  font-weight:750;
+}
+.table tr:last-child td{ border-bottom:none; }
+.kv{ display:grid; grid-template-columns:220px 1fr; gap:8px 12px; }
+.k{ color:var(--muted); font-size:12px; }
+.v{ color:rgba(15,23,42,.92); font-size:12px; }
+.small{ font-size:12px; color:var(--muted); }
+  
+.top-actions{ display:flex; align-items:center; gap:10px; }
+.iconbtn{ width:34px; height:34px; border-radius:10px; border:1px solid var(--stroke); background:#fff; cursor:pointer; position:relative; }
+.iconbtn .notif-dot{ position:absolute; top:5px; right:5px; width:8px; height:8px; border-radius:999px; background:var(--danger); }
+.notif-menu{ position:absolute; right:18px; top:56px; width:320px; max-height:260px; overflow:auto; background:#fff; border:1px solid var(--stroke); border-radius:12px; box-shadow:var(--shadow); padding:10px; display:none; z-index:30; }
+.notif-menu.open{ display:block; }
+.notif-item{ padding:8px; border:1px solid var(--stroke); border-radius:10px; margin-bottom:8px; font-size:12px; color:var(--muted); }
+.notif-item:last-child{ margin-bottom:0; }
+.clickable{ cursor:pointer; }
+.contract-box{ margin-top:12px; border:1px dashed var(--stroke); border-radius:12px; padding:10px; background:rgba(14,165,164,.06); }
+.flow-state{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+.btn[disabled]{ opacity:.5; cursor:not-allowed; }
+.modal-overlay{ position:fixed; inset:0; background:rgba(15,23,42,.35); display:none; align-items:center; justify-content:center; z-index:60; }
+.modal-overlay.open{ display:flex; }
+.modal{ width:460px; max-width:92vw; background:#fff; border:1px solid var(--stroke); border-radius:14px; padding:14px; }
+.modal h3{ margin:0 0 8px 0; font-size:18px; }
+.toast-wrap{ position:fixed; right:18px; bottom:18px; z-index:70; display:grid; gap:8px; }
+.toast{ background:#0f172a; color:#fff; border-radius:10px; padding:10px 12px; font-size:12px; opacity:.96; }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <section class="artboard" data-figma-frame="06 Согласование регистрации">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Панель менеджера</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Менеджер по продажам</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem active clickable" data-go-frame="06 Согласование регистрации">Регистрации <span class="badge">use case 1</span></div>
+          <div class="navitem clickable" data-go-frame="07 Согласование заказа и выставление счёта">Заказы</div>
+          <div class="navitem clickable" data-go-frame="08 Сборка и выдача ссылки">Сборка/выдача</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Подтверждение регистрации клиента</h1>
+
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr><th>Клиент</th><th>ИНН</th><th>Статус</th><th>Действия</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ООО «Пример»</td>
+                  <td>7700000000</td>
+                  <td><span class="chip"><span class="dot warn"></span> Ожидает подтверждения</span></td>
+                  <td>
+                    <button class="btn primary" data-open-modal="approveRegistrationModal">Подтвердить</button>
+                    <button class="btn" data-open-modal="rejectModal">Отклонить (комментарий)</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="small" style="margin-top:10px">
+              При подтверждении: учётная запись “Активен”, уведомление клиенту с данными для входа.
+              <br/>При отклонении: комментарий → уведомление клиенту.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" data-figma-frame="07 Согласование заказа и выставление счёта">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Панель менеджера</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Менеджер по продажам</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem clickable" data-go-frame="06 Согласование регистрации">Регистрации</div>
+          <div class="navitem active clickable" data-go-frame="07 Согласование заказа и выставление счёта">Заказы <span class="badge">use case 2</span></div>
+          <div class="navitem clickable" data-go-frame="08 Сборка и выдача ссылки">Сборка/выдача</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Согласование заказа</h1>
+
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr><th>Заказ</th><th>Клиент</th><th>Состав</th><th>Статус</th><th>Действия</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#A-1042</td>
+                  <td>ООО «Пример»</td>
+                  <td>Основной модуль (50), Интеграции (50)</td>
+                  <td><span class="chip"><span class="dot warn"></span> На согласовании</span></td>
+                  <td>
+                    <button class="btn primary" data-open-modal="approveOrderModal">Согласовать</button>
+                    <button class="btn" data-open-modal="rejectOrderModal">Отклонить (комментарий)</button>
+                    <button class="btn" data-open-modal="markPaymentModal">Отметить оплату</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="small" style="margin-top:10px">
+              Оплата во внешней системе: здесь фиксируется “подтверждение оплаты менеджером”.
+              <br/>После подтверждения оплаты → переход к сборке дистрибутива.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" data-figma-frame="08 Сборка и выдача ссылки">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Панель менеджера</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Менеджер по продажам</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem clickable" data-go-frame="06 Согласование регистрации">Регистрации</div>
+          <div class="navitem clickable" data-go-frame="07 Согласование заказа и выставление счёта">Заказы</div>
+          <div class="navitem active clickable" data-go-frame="08 Сборка и выдача ссылки">Сборка/выдача <span class="badge">use case 6</span></div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Формирование дистрибутива</h1>
+
+          <div class="card">
+            <div class="kv">
+              <div class="k">Заказ</div><div class="v">#A-1042</div>
+              <div class="k">Состав</div><div class="v">выбранные модули + зависимости + файл лицензии + инструкция</div>
+              <div class="k">Договор</div><div class="v" id="contractStateText">Не прикреплён</div>
+              <div class="k">Результат</div><div class="v">архив + уникальная ссылка + контрольная сумма</div>
+            </div>
+
+            <div class="contract-box">
+              <div class="row">
+                <span class="chip"><span class="dot warn" id="contractDot"></span> Статус договора: <span id="contractStatus">ожидается</span></span>
+                <button class="btn" data-open-modal="attachContractModal">Прикрепить договор</button>
+              </div>
+              <div class="small" style="margin-top:8px">Сборка активируется только после прикрепления договора о формировании дистрибутива.</div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn primary" id="startBuildBtn" data-open-modal="startBuildModal" disabled>Запустить сборку</button>
+              <button class="btn" id="generateLinkBtn" data-open-modal="generateLinkModal" disabled>Сформировать ссылку</button>
+              <button class="btn" id="notifyClientBtn" data-open-modal="notifyClientModal" disabled>Отправить уведомление клиенту</button>
+            </div>
+
+            <div class="flow-state">
+              <span class="chip"><span class="dot" id="flowContractDot"></span> Договор</span>
+              <span class="chip"><span class="dot" id="flowBuildDot"></span> Сборка</span>
+              <span class="chip"><span class="dot" id="flowLinkDot"></span> Ссылка</span>
+              <span class="chip"><span class="dot" id="flowNotifyDot"></span> Уведомление</span>
+            </div>
+
+            <div class="small" style="margin-top:10px">
+              Последовательность: договор → сборка → ссылка → уведомление клиенту.
+              <br/>Расширение 2а: ошибка сборки → уведомление менеджеру и повтор/ручная сборка.
+              <br/>Расширение 5а: истечение срока ссылки → генерация новой ссылки.
+              <br/>Расширение 5б: несоответствие контрольной суммы → повторная выдача/контроль целостности.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="notif-menu" id="notifMenu">
+    <div class="notif-item">Новый заказ #A-1042 ожидает согласования.</div>
+    <div class="notif-item">Клиент загрузил уточнение по заявке #T-512.</div>
+    <div class="notif-item">Срок ссылки по заказу #A-1009 истекает сегодня.</div>
+  </div>
+
+  <div class="modal-overlay" id="approveRegistrationModal"><div class="modal"><h3>Подтвердить регистрацию</h3><p class="small">Активировать учетную запись клиента и отправить доступы?</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Регистрация подтверждена" data-close-modal="approveRegistrationModal">Подтвердить</button><button class="btn" data-close-modal="approveRegistrationModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="rejectModal"><div class="modal"><h3>Отклонить регистрацию</h3><p class="small">Комментарий будет отправлен клиенту.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Регистрация отклонена с комментарием" data-close-modal="rejectModal">Отправить</button><button class="btn" data-close-modal="rejectModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="approveOrderModal"><div class="modal"><h3>Согласовать заказ</h3><p class="small">Заказ перейдет на этап оплаты.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Заказ согласован" data-close-modal="approveOrderModal">Согласовать</button><button class="btn" data-close-modal="approveOrderModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="rejectOrderModal"><div class="modal"><h3>Отклонить заказ</h3><p class="small">Клиент получит комментарий для корректировки.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Заказ отклонён" data-close-modal="rejectOrderModal">Отклонить</button><button class="btn" data-close-modal="rejectOrderModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="markPaymentModal"><div class="modal"><h3>Подтвердить оплату</h3><p class="small">После подтверждения можно начинать подготовку дистрибутива.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Оплата подтверждена" data-close-modal="markPaymentModal">Подтвердить</button><button class="btn" data-close-modal="markPaymentModal">Отмена</button></div></div></div>
+
+  <div class="modal-overlay" id="attachContractModal"><div class="modal"><h3>Прикрепить договор</h3><p class="small">Загрузить договор о формировании дистрибутива для заказа #A-1042?</p><div class="btnrow"><button class="btn primary" data-action="attach-contract" data-close-modal="attachContractModal">Прикрепить</button><button class="btn" data-close-modal="attachContractModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="startBuildModal"><div class="modal"><h3>Запустить сборку</h3><p class="small">Создать пакет дистрибутива по согласованному составу.</p><div class="btnrow"><button class="btn primary" data-action="build-complete" data-close-modal="startBuildModal">Запустить</button><button class="btn" data-close-modal="startBuildModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="generateLinkModal"><div class="modal"><h3>Сформировать ссылку</h3><p class="small">Сгенерировать уникальную ссылку и контрольную сумму.</p><div class="btnrow"><button class="btn primary" data-action="link-complete" data-close-modal="generateLinkModal">Сформировать</button><button class="btn" data-close-modal="generateLinkModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="notifyClientModal"><div class="modal"><h3>Отправить уведомление клиенту</h3><p class="small">Отправить клиенту ссылку на скачивание и инструкцию.</p><div class="btnrow"><button class="btn primary" data-action="notify-complete" data-close-modal="notifyClientModal">Отправить</button><button class="btn" data-close-modal="notifyClientModal">Отмена</button></div></div></div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+  (() => {
+    const byId = (id) => document.getElementById(id);
+    const notifMenu = byId('notifMenu');
+    const toastWrap = byId('toastWrap');
+
+    const startBuildBtn = byId('startBuildBtn');
+    const generateLinkBtn = byId('generateLinkBtn');
+    const notifyClientBtn = byId('notifyClientBtn');
+
+    const contractStatus = byId('contractStatus');
+    const contractStateText = byId('contractStateText');
+    const contractDot = byId('contractDot');
+
+    const flowContractDot = byId('flowContractDot');
+    const flowBuildDot = byId('flowBuildDot');
+    const flowLinkDot = byId('flowLinkDot');
+    const flowNotifyDot = byId('flowNotifyDot');
+
+    function showToast(text){
+      const el = document.createElement('div');
+      el.className='toast';
+      el.textContent=text;
+      toastWrap.appendChild(el);
+      setTimeout(()=>el.remove(),2600);
+    }
+
+    function goToFrame(name){
+      const target = document.querySelector(`[data-figma-frame="${name}"]`);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-action],[data-open-modal],[data-close-modal],[data-go-frame]');
+      if(!t) return;
+
+      if(t.dataset.action === 'toggle-notif'){
+        notifMenu.classList.toggle('open');
+        return;
+      }
+      if(t.dataset.openModal){ byId(t.dataset.openModal)?.classList.add('open'); }
+      if(t.dataset.closeModal){ byId(t.dataset.closeModal)?.classList.remove('open'); }
+      if(t.dataset.goFrame){ goToFrame(t.dataset.goFrame); }
+
+      if(t.dataset.action === 'toast' && t.dataset.toast){ showToast(t.dataset.toast); }
+      if(t.dataset.action === 'attach-contract'){
+        contractStatus.textContent = 'прикреплён';
+        contractStateText.textContent = 'Договор_формирование_дистрибутива_v3.pdf';
+        contractDot.classList.remove('warn'); contractDot.classList.add('ok');
+        flowContractDot.classList.add('ok');
+        startBuildBtn.disabled = false;
+        showToast('Договор прикреплён');
+      }
+      if(t.dataset.action === 'build-complete'){
+        flowBuildDot.classList.add('ok');
+        generateLinkBtn.disabled = false;
+        showToast('Сборка завершена успешно');
+      }
+      if(t.dataset.action === 'link-complete'){
+        flowLinkDot.classList.add('ok');
+        notifyClientBtn.disabled = false;
+        showToast('Ссылка и контрольная сумма сформированы');
+      }
+      if(t.dataset.action === 'notify-complete'){
+        flowNotifyDot.classList.add('ok');
+        showToast('Клиент уведомлён о готовности дистрибутива');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if(!e.target.closest('.top-actions') && !e.target.closest('#notifMenu')) notifMenu.classList.remove('open');
+      if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+    });
+  })();
+  </script>
+
+</body>
+</html>

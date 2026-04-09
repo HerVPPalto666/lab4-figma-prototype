@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>1) Заказчик (inline)</title>
+  <style>
+:root{
+  --bg:#F6F8FC;
+  --panel:#FFFFFF;
+  --panel2:#F2F6FF;
+  --stroke:rgba(15,23,42,0.12);
+  --text:#0F172A;
+  --muted:rgba(15,23,42,0.65);
+  --brand:#0EA5A4;
+  --danger:#EF4444;
+  --warn:#F59E0B;
+  --ok:#10B981;
+  --chipBg:rgba(15,23,42,0.04);
+  --r-sm:10px; --r-md:14px; --r-lg:18px;
+  --shadow:0 16px 40px rgba(15,23,42,0.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;
+}
+.page{ padding:28px; display:grid; gap:24px; }
+.artboard{
+  width:1440px; height:900px;
+  border:1px solid var(--stroke);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,0));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.shell{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  grid-template-rows:64px 1fr;
+  height:100%;
+}
+.topbar{
+  grid-column:1/3;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 18px;
+  background:rgba(255,255,255,.86);
+  border-bottom:1px solid var(--stroke);
+}
+.brand{ display:flex; align-items:center; gap:10px; font-weight:750; }
+.logo{
+  width:110px; height:34px;
+  border-radius:0;
+  border:none;
+  background: url('data:image/png;base64,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') center/contain no-repeat;
+}
+.user{ display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12px; }
+.avatar{ width:28px; height:28px; border-radius:10px; background:rgba(255,255,255,.95); border:1px solid var(--stroke); }
+.sidenav{
+  background:rgba(15,23,42,.02);
+  border-right:1px solid var(--stroke);
+  padding:14px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.navtitle{ color:var(--muted); font-size:12px; margin:8px 10px; }
+.navitem{
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid transparent;
+  color:var(--muted);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.navitem.active{
+  color:var(--text);
+  background:rgba(14,165,164,.10);
+  border-color:rgba(14,165,164,.25);
+}
+.badge{
+  font-size:12px; padding:2px 8px; border-radius:999px;
+  background:rgba(14,165,164,.10);
+  border:1px solid var(--stroke);
+  color:var(--muted);
+}
+.content{ padding:18px; overflow:auto; }
+.h1{ font-size:24px; font-weight:800; margin:0 0 14px 0; }
+.h2{ font-size:18px; font-weight:750; margin:0 0 12px 0; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.card{
+  background:rgba(255,255,255,.82);
+  border:1px solid var(--stroke);
+  border-radius:var(--r-lg);
+  padding:14px;
+}
+.row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.label{ font-size:12px; color:var(--muted); }
+.input, .select, .textarea{
+  background:rgba(255,255,255,.95);
+  border:1px solid var(--stroke);
+  border-radius:12px;
+  padding:10px 12px;
+  color:var(--text);
+  outline:none;
+}
+.textarea{ min-height:110px; resize:none; }
+.btnrow{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+.btn{
+  padding:10px 12px; border-radius:12px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.95);
+  color:var(--text);
+  font-weight:650;
+}
+.btn.primary{
+  border-color:rgba(14,165,164,.35);
+  background:rgba(14,165,164,.14);
+}
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  background:var(--chipBg);
+  border:1px solid var(--stroke);
+  color:var(--muted);
+  font-size:12px;
+}
+.dot{ width:8px; height:8px; border-radius:999px; background:var(--muted); }
+.dot.ok{ background:var(--ok); }
+.dot.warn{ background:var(--warn); }
+.dot.bad{ background:var(--danger); }
+.alert{
+  border-radius:14px;
+  padding:10px 12px;
+  border:1px solid rgba(239,68,68,.25);
+  background:rgba(239,68,68,.10);
+  color:rgba(127,29,29,.98);
+  font-size:12px;
+}
+.table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid var(--stroke);
+}
+.table th, .table td{
+  padding:10px 10px;
+  border-bottom:1px solid var(--stroke);
+  font-size:12px;
+  color:var(--muted);
+  vertical-align:top;
+}
+.table th{
+  color:rgba(15,23,42,.92);
+  background:rgba(14,165,164,.10);
+  font-weight:750;
+}
+.table tr:last-child td{ border-bottom:none; }
+.kv{ display:grid; grid-template-columns:220px 1fr; gap:8px 12px; }
+.k{ color:var(--muted); font-size:12px; }
+.v{ color:rgba(15,23,42,.92); font-size:12px; }
+.small{ font-size:12px; color:var(--muted); }
+.hr{ height:1px; background:var(--stroke); margin:12px 0; }
+  
+.top-actions{ display:flex; align-items:center; gap:10px; }
+.iconbtn{
+  width:34px; height:34px; border-radius:10px; border:1px solid var(--stroke);
+  background:rgba(255,255,255,.95); display:inline-flex; align-items:center; justify-content:center;
+  cursor:pointer; position:relative;
+}
+.iconbtn .notif-dot{ position:absolute; top:5px; right:5px; width:8px; height:8px; border-radius:999px; background:var(--danger); }
+.notif-menu{
+  position:absolute; right:18px; top:56px; width:320px; max-height:260px; overflow:auto;
+  background:#fff; border:1px solid var(--stroke); border-radius:12px; box-shadow:var(--shadow);
+  padding:10px; display:none; z-index:30;
+}
+.notif-menu.open{ display:block; }
+.notif-item{ padding:8px; border-radius:10px; border:1px solid var(--stroke); margin-bottom:8px; font-size:12px; color:var(--muted); }
+.notif-item:last-child{ margin-bottom:0; }
+.searchbar{ display:flex; gap:8px; margin-bottom:10px; }
+.searchbar .input{ flex:1; }
+.filter-tags{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 10px 0; }
+.module-row.hidden{ display:none; }
+.cart-summary{ margin-top:12px; padding:10px; border:1px dashed var(--stroke); border-radius:12px; background:rgba(14,165,164,.06); }
+.quick-links{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.quick-link{ font-size:12px; padding:8px; border:1px solid var(--stroke); border-radius:10px; color:var(--muted); background:#fff; }
+.btn.sm{ padding:6px 10px; border-radius:10px; font-size:12px; }
+.action-cell{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(15,23,42,.35); display:none; align-items:center; justify-content:center; z-index:60;
+}
+.modal-overlay.open{ display:flex; }
+.modal{ width:460px; max-width:92vw; background:#fff; border:1px solid var(--stroke); border-radius:14px; padding:14px; }
+.modal h3{ margin:0 0 8px 0; font-size:18px; }
+.toast-wrap{ position:fixed; right:18px; bottom:18px; z-index:70; display:grid; gap:8px; }
+.toast{ background:#0f172a; color:#fff; border-radius:10px; padding:10px 12px; font-size:12px; opacity:.96; }
+.clickable{ cursor:pointer; }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- 01 Регистрация (use case 1) -->
+    <section class="artboard" data-figma-frame="01 Регистрация (форма)">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Личный кабинет — Заказчик</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Гость / Клиент</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem active">Регистрация <span class="badge">use case 1</span></div>
+          <div class="navitem clickable" data-go-frame="02 Каталог модулей">Каталог модулей</div>
+          <div class="navitem clickable" data-go-frame="03 Заказ: формирование и отправка">Заказы</div>
+          <div class="navitem clickable" data-go-frame="04 Создать заявку в техподдержку">Техподдержка</div>
+          <div class="navitem clickable" data-go-frame="05 Дистрибутивы: скачивание и подтверждение">Дистрибутивы</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Регистрация нового клиента</h1>
+
+          <div class="card">
+            <div class="grid2">
+              <div class="field">
+                <div class="label">Наименование юрлица</div>
+                <div class="input">ООО «Пример»</div>
+              </div>
+              <div class="field">
+                <div class="label">ИНН</div>
+                <div class="input">7700000000</div>
+              </div>
+              <div class="field">
+                <div class="label">Контактные данные</div>
+                <div class="input">+7 (900) 000‑00‑00</div>
+              </div>
+              <div class="field">
+                <div class="label">Email ответственного лица</div>
+                <div class="input">it@company.ru</div>
+              </div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn primary" data-open-modal="registrationSubmitModal">Отправить заявку</button>
+              <button class="btn">Очистить</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <span class="chip"><span class="dot warn"></span> Ожидает подтверждения</span>
+              <span class="small">Система сохраняет учётную запись и уведомляет администратора.</span>
+            </div>
+
+            <div style="margin-top:10px" class="alert">
+              Расширение 2а (Некорректные данные): показать ошибки валидации и попросить исправить поля.
+              <br/>Расширение 5а (Отклонение регистрации): показать комментарий администратора и дать редактировать заявку.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <!-- 02 Каталог модулей (use case 5 + часть use case 2) -->
+    <section class="artboard" data-figma-frame="02 Каталог модулей">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Личный кабинет — Заказчик</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Клиент • статус: <span style="color:#EAF0FF">Активен</span></div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem clickable" data-go-frame="01 Регистрация (форма)">Регистрация</div>
+          <div class="navitem active clickable" data-go-frame="02 Каталог модулей">Каталог модулей <span class="badge">use case 5</span></div>
+          <div class="navitem clickable" data-go-frame="03 Заказ: формирование и отправка">Заказы</div>
+          <div class="navitem clickable" data-go-frame="04 Создать заявку в техподдержку">Техподдержка</div>
+          <div class="navitem clickable" data-go-frame="05 Дистрибутивы: скачивание и подтверждение">Дистрибутивы</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Каталог модулей</h1>
+
+          <div class="grid2">
+            <div class="card">
+              <h2 class="h2">Список модулей</h2>
+              <div class="searchbar">
+                <div class="input" contenteditable="true" data-search-input="modules" role="searchbox">Поиск по названию, лицензии или зависимостям…</div>
+                <button class="btn" data-action="search-modules">Найти</button>
+              </div>
+              <div class="filter-tags">
+                <span class="chip clickable" data-filter="all"><span class="dot ok"></span> Все</span>
+                <span class="chip clickable" data-filter="core"><span class="dot"></span> Базовые</span>
+                <span class="chip clickable" data-filter="analytics"><span class="dot warn"></span> Аналитика</span>
+              </div>
+              <table class="table" data-modules-table>
+                <thead>
+                  <tr><th>Модуль</th><th>Лицензия</th><th>Зависимости</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="module-row" data-group="core"><td>Основной модуль</td><td>Бессрочно, 10/50/100 подключений</td><td>—</td></tr>
+                  <tr class="module-row" data-group="core"><td>Склад</td><td>Бессрочно, без ограничений</td><td>Основной модуль (реком.)</td></tr>
+                  <tr class="module-row" data-group="core"><td>Микроэлектроника</td><td>Бессрочно, без ограничений</td><td>Основной модуль (реком.)</td></tr>
+                  <tr class="module-row" data-group="core"><td>SMT (Поверхностный монтаж)</td><td>Бессрочно, без ограничений</td><td>Основной модуль (реком.)</td></tr>
+                  <tr class="module-row" data-group="analytics"><td>Аналитика SMT</td><td>1/2/5 лет</td><td>SMT (обяз.)</td></tr>
+                  <tr class="module-row" data-group="core"><td>Интеграции</td><td>Бессрочно, 10/50/100 подключений</td><td>Основной модуль (обяз.)</td></tr>
+                </tbody>
+              </table>
+
+              <div class="hr"></div>
+              <button class="btn primary" data-open-modal="cartModal" data-go-frame="03 Заказ: формирование и отправка">Выбрать модули для покупки</button>
+            </div>
+
+            <div class="card">
+              <h2 class="h2">Карточка модуля</h2>
+              <div class="kv">
+                <div class="k">Функционал</div><div class="v">Справочники, АРМы, операции (по модулю)</div>
+                <div class="k">Состав</div><div class="v">API, БД, клиентское приложение</div>
+                <div class="k">Типы лицензий</div><div class="v">Бессрочно / по времени (для аналитики)</div>
+                <div class="k">Ограничения</div><div class="v">По подключениям или по сроку</div>
+              </div>
+
+              <div class="hr"></div>
+              <h2 class="h2">Зависимости</h2>
+              <div class="row">
+                <span class="chip"><span class="dot ok"></span> Обязательные: SMT</span>
+                <span class="chip"><span class="dot"></span> Рекомендуемые: Основной модуль</span>
+              </div>
+
+              <div class="hr"></div>
+              <div class="small">
+                Расширение 4а (Циклические зависимости): визуализировать граф и предупредить о конфликтах.
+                <br/>Расширение 4б (Отсутствие зависимостей): показать “Модуль автономный, не требует дополнительных компонентов”.
+              </div>
+
+              <div class="hr"></div>
+              <h2 class="h2">Рекомендации и корзина</h2>
+              <div class="quick-links">
+                <div class="quick-link">Пакет "Базовый запуск": Основной модуль + Интеграции</div>
+                <div class="quick-link">Пакет "SMT-аналитика": SMT + Аналитика SMT</div>
+                <div class="quick-link">Быстрый фильтр: только бессрочные лицензии</div>
+                <div class="quick-link">Проверка совместимости перед добавлением в корзину</div>
+              </div>
+              <div class="cart-summary">
+                <div class="row"><span class="chip"><span class="dot ok"></span> В корзине: 3 модуля</span><span class="small">Готово к формированию заказа</span></div>
+                <div class="btnrow"><button class="btn" data-go-frame="03 Заказ: формирование и отправка">Перейти к формированию заказа</button></div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <!-- 03 Заказ: формирование и отправка (use case 2) -->
+    <section class="artboard" data-figma-frame="03 Заказ: формирование и отправка">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Личный кабинет — Заказчик</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Клиент</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem clickable" data-go-frame="02 Каталог модулей">Каталог модулей</div>
+          <div class="navitem active clickable" data-go-frame="03 Заказ: формирование и отправка">Заказы <span class="badge">use case 2</span></div>
+          <div class="navitem clickable" data-go-frame="04 Создать заявку в техподдержку">Техподдержка</div>
+          <div class="navitem clickable" data-go-frame="05 Дистрибутивы: скачивание и подтверждение">Дистрибутивы</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Формирование заказа</h1>
+          <div class="row" style="margin-bottom:10px">
+            <span class="chip"><span class="dot ok"></span> Корзина сформирована из каталога</span>
+            <button class="btn sm" data-go-frame="02 Каталог модулей">Вернуться в каталог</button>
+          </div>
+
+          <div class="card">
+            <h2 class="h2">Выбранные модули</h2>
+            <table class="table">
+              <thead>
+                <tr><th>Модуль</th><th>Количество лицензий</th><th>Параметры</th><th>Зависимости</th></tr>
+              </thead>
+              <tbody>
+                <tr class="module-row" data-group="core"><td>Основной модуль</td><td>50</td><td>ограничение по подключениям</td><td>—</td></tr>
+                <tr class="module-row" data-group="core"><td>Интеграции</td><td>50</td><td>ограничение по подключениям</td><td>Основной модуль (обяз.)</td></tr>
+                <tr class="module-row" data-group="analytics"><td>Аналитика SMT</td><td>1</td><td>2 года</td><td>SMT (обяз.)</td></tr>
+              </tbody>
+            </table>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <span class="chip"><span class="dot warn"></span> Проверка зависимостей</span>
+              <span class="small">Если не хватает зависимостей — предупреждаем и предлагаем добавить.</span>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn primary" data-open-modal="submitOrderModal">Отправить на согласование менеджеру</button>
+              <button class="btn">Сохранить черновик</button>
+            </div>
+
+            <div style="margin-top:10px" class="small">
+              Расширение 3а: “Несовместимые модули” — блокировать выбор и показать конфликт.
+              <br/>Расширение 5а: “Отклонение заказа” — показать комментарий менеджера и дать скорректировать заказ.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <!-- 04 Создать заявку (use case 3 — клиент) -->
+    <section class="artboard" data-figma-frame="04 Создать заявку в техподдержку">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Личный кабинет — Заказчик</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Клиент</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem clickable" data-go-frame="03 Заказ: формирование и отправка">Заказы</div>
+          <div class="navitem active clickable" data-go-frame="04 Создать заявку в техподдержку">Техподдержка <span class="badge">use case 3</span></div>
+          <div class="navitem clickable" data-go-frame="05 Дистрибутивы: скачивание и подтверждение">Дистрибутивы</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Создать заявку в техподдержку</h1>
+
+          <div class="card">
+            <div class="grid2">
+              <div class="field">
+                <div class="label">Модуль</div>
+                <div class="select">SMT (Поверхностный монтаж)</div>
+              </div>
+              <div class="field">
+                <div class="label">Тип проблемы</div>
+                <div class="select">Сбой / Ошибка установки / Лицензия</div>
+              </div>
+              <div class="field" style="grid-column:1/3">
+                <div class="label">Описание</div>
+                <div class="textarea">Опишите проблему и шаги воспроизведения…</div>
+              </div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn primary" data-open-modal="supportCreateModal">Отправить заявку</button>
+              <button class="btn">Прикрепить файл (опц.)</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <span class="chip"><span class="dot"></span> Статус после создания: Новая</span>
+              <span class="small">Направляется специалисту 1-й линии.</span>
+            </div>
+
+            <div class="small" style="margin-top:10px">
+              При эскалации: статус “В работе (2-я линия)”, уведомление клиенту.
+              <br/>Расширение 4а: “Ожидает ответа клиента” (недостаточно информации).
+              <br/>Расширение 7а: “Решение не подтверждено” → возврат в “В работе”.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <!-- 05 Дистрибутивы (use case 6 — клиент) -->
+    <section class="artboard" data-figma-frame="05 Дистрибутивы: скачивание и подтверждение">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Личный кабинет — Заказчик</div>
+          <div class="top-actions"><button class="iconbtn" data-action="toggle-notif" title="Уведомления">🔔<span class="notif-dot"></span></button><div class="user"><div class="avatar"></div> Клиент</div></div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem clickable" data-go-frame="03 Заказ: формирование и отправка">Заказы</div>
+          <div class="navitem active clickable" data-go-frame="05 Дистрибутивы: скачивание и подтверждение">Дистрибутивы <span class="badge">use case 6</span></div>
+          <div class="navitem clickable" data-go-frame="04 Создать заявку в техподдержку">Техподдержка</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Дистрибутивы</h1>
+
+          <div class="card">
+            <h2 class="h2">Доступно для скачивания</h2>
+
+            <table class="table">
+              <thead>
+                <tr><th>Заказ</th><th>Состав</th><th>Ссылка</th><th>Контрольная сумма</th><th>Действия</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#A-1042</td>
+                  <td>Основной модуль, Интеграции</td>
+                  <td>download.company.ru/…</td>
+                  <td>SHA-256: 9f2c…</td>
+                  <td>
+                    <div class="action-cell">
+                      <span class="chip"><span class="dot ok"></span> Доступно</span>
+                      <button class="btn sm primary" data-open-modal="downloadModal">Скачать</button>
+                      <button class="btn sm" data-open-modal="confirmReceiveModal">Подтвердить получение</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="small" style="margin-top:10px">Действия перенесены в строку каждого дистрибутива для контекстной работы с конкретным заказом.</div>
+
+            <div class="small" style="margin-top:10px">
+              Расширение 5а: истечение срока ссылки → “Запросить новую ссылку”.
+              <br/>Расширение 5б: несоответствие контрольной суммы → “Повторить скачивание” + уведомление менеджеру.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="notif-menu" id="notifMenu">
+    <div class="notif-item">Новая заявка техподдержки: #T-512, ожидает ответа.</div>
+    <div class="notif-item">Менеджер согласовал заказ #A-1042.</div>
+    <div class="notif-item">Ссылка на дистрибутив активна до 18.04.2026.</div>
+  </div>
+
+  <div class="modal-overlay" id="registrationSubmitModal"><div class="modal"><h3>Отправить регистрационную заявку</h3><p class="small">Заявка будет передана администратору на проверку.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Регистрационная заявка отправлена" data-close-modal="registrationSubmitModal">Отправить</button><button class="btn" data-close-modal="registrationSubmitModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="cartModal"><div class="modal"><h3>Модули добавлены в корзину</h3><p class="small">Выбранные модули сохранены. Перейти к формированию заказа?</p><div class="btnrow"><button class="btn primary" data-go-frame="03 Заказ: формирование и отправка" data-close-modal="cartModal">Перейти</button><button class="btn" data-close-modal="cartModal">Остаться в каталоге</button></div></div></div>
+  <div class="modal-overlay" id="submitOrderModal"><div class="modal"><h3>Отправить заказ менеджеру</h3><p class="small">После отправки заказ перейдет в статус согласования.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Заказ отправлен на согласование" data-close-modal="submitOrderModal">Подтвердить</button><button class="btn" data-close-modal="submitOrderModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="supportCreateModal"><div class="modal"><h3>Создать заявку в техподдержку</h3><p class="small">Заявка будет направлена на 1-ю линию поддержки.</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Заявка в техподдержку создана" data-close-modal="supportCreateModal">Создать</button><button class="btn" data-close-modal="supportCreateModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="downloadModal"><div class="modal"><h3>Скачать дистрибутив</h3><p class="small">Начать скачивание пакета #A-1042?</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Скачивание начато" data-close-modal="downloadModal">Скачать</button><button class="btn" data-close-modal="downloadModal">Отмена</button></div></div></div>
+  <div class="modal-overlay" id="confirmReceiveModal"><div class="modal"><h3>Подтвердить получение</h3><p class="small">Подтвердить, что пакет установлен и контрольная сумма проверена?</p><div class="btnrow"><button class="btn primary" data-action="toast" data-toast="Получение подтверждено" data-close-modal="confirmReceiveModal">Подтвердить</button><button class="btn" data-close-modal="confirmReceiveModal">Отмена</button></div></div></div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script>
+  (() => {
+    const byId = (id) => document.getElementById(id);
+    const notifMenu = byId('notifMenu');
+    const toastWrap = byId('toastWrap');
+
+    function showToast(text){
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = text;
+      toastWrap.appendChild(el);
+      setTimeout(() => el.remove(), 2600);
+    }
+
+    function goToFrame(name){
+      const target = document.querySelector(`[data-figma-frame="${name}"]`);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    function applyFilter(group){
+      document.querySelectorAll('[data-modules-table] .module-row').forEach((row) => {
+        row.classList.toggle('hidden', group !== 'all' && row.dataset.group !== group);
+      });
+    }
+
+    function searchModules(){
+      const input = document.querySelector('[data-search-input="modules"]');
+      const q = (input?.textContent || '').trim().toLowerCase();
+      document.querySelectorAll('[data-modules-table] .module-row').forEach((row) => {
+        row.classList.toggle('hidden', !row.textContent.toLowerCase().includes(q));
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-action],[data-open-modal],[data-close-modal],[data-go-frame],[data-filter]');
+      if(!t) return;
+
+      if(t.dataset.action === 'toggle-notif'){
+        notifMenu.classList.toggle('open');
+        return;
+      }
+      if(t.dataset.openModal){
+        byId(t.dataset.openModal)?.classList.add('open');
+      }
+      if(t.dataset.closeModal){
+        byId(t.dataset.closeModal)?.classList.remove('open');
+      }
+      if(t.dataset.goFrame){
+        goToFrame(t.dataset.goFrame);
+      }
+      if(t.dataset.filter){
+        applyFilter(t.dataset.filter);
+      }
+      if(t.dataset.action === 'search-modules'){
+        searchModules();
+      }
+      if(t.dataset.action === 'toast' && t.dataset.toast){
+        showToast(t.dataset.toast);
+      }
+    });
+
+    document.addEventListener('input', (e) => {
+      if(e.target.matches('[data-search-input="modules"]')) searchModules();
+    });
+
+    document.addEventListener('click', (e) => {
+      if(!e.target.closest('.top-actions') && !e.target.closest('#notifMenu')){
+        notifMenu.classList.remove('open');
+      }
+      if(e.target.classList.contains('modal-overlay')){
+        e.target.classList.remove('open');
+      }
+    });
+  })();
+  </script>
+
+</body>
+</html>

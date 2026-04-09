@@ -1,0 +1,30 @@
+{
+  "color": {
+    "bg": { "value": "#0B1220" },
+    "panel": { "value": "#0F1B33" },
+    "panel2": { "value": "#121F3D" },
+    "stroke": { "value": "rgba(255,255,255,0.10)" },
+    "text": { "value": "#EAF0FF" },
+    "muted": { "value": "rgba(234,240,255,0.70)" },
+    "brand": { "value": "#5B8CFF" },
+    "danger": { "value": "#FF5B6E" },
+    "warn": { "value": "#FFB020" },
+    "ok": { "value": "#2EE59D" },
+    "chipBg": { "value": "rgba(255,255,255,0.08)" }
+  },
+  "radius": {
+    "sm": { "value": 10 },
+    "md": { "value": 14 },
+    "lg": { "value": 18 }
+  },
+  "shadow": {
+    "card": { "value": "0 16px 40px rgba(0,0,0,0.45)" }
+  },
+  "typography": {
+    "fontFamily": { "value": "system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial" },
+    "h1": { "value": { "fontSize": 24, "fontWeight": 700, "lineHeight": 1.2 } },
+    "h2": { "value": { "fontSize": 18, "fontWeight": 650, "lineHeight": 1.25 } },
+    "body": { "value": { "fontSize": 14, "fontWeight": 500, "lineHeight": 1.45 } },
+    "small": { "value": { "fontSize": 12, "fontWeight": 500, "lineHeight": 1.45 } }
+  }
+}

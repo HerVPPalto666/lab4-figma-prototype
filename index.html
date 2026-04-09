@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Chelmash Prototype</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#111a33;
+      --stroke:rgba(255,255,255,0.14);
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,0.72);
+      --brand:#0ea5a4;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
+      background:radial-gradient(1200px 600px at 20% 0%, #152345, var(--bg));
+      color:var(--text);
+      display:grid;
+      place-items:center;
+      padding:20px;
+    }
+    .wrap{
+      width:min(900px,100%);
+      background:rgba(17,26,51,.86);
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:22px;
+      backdrop-filter:blur(6px);
+    }
+    h1{ margin:0 0 10px; font-size:30px; }
+    p{ margin:0 0 18px; color:var(--muted); }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+    }
+    .card{
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:14px;
+      background:rgba(255,255,255,.02);
+      transition:transform .12s ease, border-color .12s ease, background .12s ease;
+      display:block;
+    }
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(14,165,164,.55);
+      background:rgba(14,165,164,.08);
+    }
+    .card h2{ margin:0 0 8px; font-size:18px; }
+    .small{ color:var(--muted); font-size:13px; }
+    .footer{ margin-top:16px; color:var(--muted); font-size:12px; }
+    code{
+      background:rgba(255,255,255,.07);
+      border:1px solid var(--stroke);
+      border-radius:8px;
+      padding:2px 6px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Chelmash Interactive Prototype</h1>
+    <p>Выбери роль и открой интерактивный макет. Все сценарии работают без бэкенда.</p>
+
+    <section class="grid">
+      <a class="card" href="./figma-html/customer.inline.html">
+        <h2>Заказчик</h2>
+        <div class="small">Каталог, корзина, заказ, техподдержка, дистрибутивы.</div>
+      </a>
+      <a class="card" href="./figma-html/manager.inline.html">
+        <h2>Менеджер</h2>
+        <div class="small">Согласование, подтверждение оплаты, договор, сборка, выдача.</div>
+      </a>
+      <a class="card" href="./figma-html/support-admin.inline.html">
+        <h2>Техподдержка + Админ</h2>
+        <div class="small">Очередь, карточка, история создания, архив, управление ролями.</div>
+      </a>
+    </section>
+
+    <div class="footer">GitHub Pages entrypoint: <code>index.html</code></div>
+  </main>
+</body>
+</html>

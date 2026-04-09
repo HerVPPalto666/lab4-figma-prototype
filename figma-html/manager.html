@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>2) Менеджер</title>
+  <link rel="stylesheet" href="./ui.css"/>
+</head>
+<body>
+  <div class="page">
+
+    <section class="artboard" data-figma-frame="06 Согласование регистрации">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Панель менеджера</div>
+          <div class="user"><div class="avatar"></div> Менеджер по продажам</div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem active">Регистрации <span class="badge">use case 1</span></div>
+          <div class="navitem">Заказы</div>
+          <div class="navitem">Сборка/выдача</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Подтверждение регистрации клиента</h1>
+
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr><th>Клиент</th><th>ИНН</th><th>Статус</th><th>Действия</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ООО «Пример»</td>
+                  <td>7700000000</td>
+                  <td><span class="chip"><span class="dot warn"></span> Ожидает подтверждения</span></td>
+                  <td>
+                    <button class="btn primary">Подтвердить</button>
+                    <button class="btn">Отклонить (комментарий)</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="small" style="margin-top:10px">
+              При подтверждении: учётная запись “Активен”, уведомление клиенту с данными для входа.
+              <br/>При отклонении: комментарий → уведомление клиенту.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" data-figma-frame="07 Согласование заказа и выставление счёта">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Панель менеджера</div>
+          <div class="user"><div class="avatar"></div> Менеджер по продажам</div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem">Регистрации</div>
+          <div class="navitem active">Заказы <span class="badge">use case 2</span></div>
+          <div class="navitem">Сборка/выдача</div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Согласование заказа</h1>
+
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr><th>Заказ</th><th>Клиент</th><th>Состав</th><th>Статус</th><th>Действия</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#A-1042</td>
+                  <td>ООО «Пример»</td>
+                  <td>Основной модуль (50), Интеграции (50)</td>
+                  <td><span class="chip"><span class="dot warn"></span> На согласовании</span></td>
+                  <td>
+                    <button class="btn primary">Согласовать</button>
+                    <button class="btn">Отклонить (комментарий)</button>
+                    <button class="btn">Отметить оплату</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="small" style="margin-top:10px">
+              Оплата во внешней системе: здесь фиксируется “подтверждение оплаты менеджером”.
+              <br/>После подтверждения оплаты → переход к сборке дистрибутива.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" data-figma-frame="08 Сборка и выдача ссылки">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand"><div class="logo"></div> Панель менеджера</div>
+          <div class="user"><div class="avatar"></div> Менеджер по продажам</div>
+        </div>
+
+        <aside class="sidenav">
+          <div class="navtitle">Меню</div>
+          <div class="navitem">Регистрации</div>
+          <div class="navitem">Заказы</div>
+          <div class="navitem active">Сборка/выдача <span class="badge">use case 6</span></div>
+        </aside>
+
+        <main class="content">
+          <h1 class="h1">Формирование дистрибутива</h1>
+
+          <div class="card">
+            <div class="kv">
+              <div class="k">Заказ</div><div class="v">#A-1042</div>
+              <div class="k">Состав</div><div class="v">выбранные модули + зависимости + файл лицензии + инструкция</div>
+              <div class="k">Результат</div><div class="v">архив + уникальная ссылка + контрольная сумма</div>
+            </div>
+
+            <div class="btnrow">
+              <button class="btn primary">Запустить сборку</button>
+              <button class="btn">Сформировать ссылку</button>
+              <button class="btn">Отправить уведомление клиенту</button>
+            </div>
+
+            <div class="small" style="margin-top:10px">
+              Расширение 2а: ошибка сборки → уведомление менеджеру и повтор/ручная сборка.
+              <br/>Расширение 5а: истечение срока ссылки → генерация новой ссылки.
+              <br/>Расширение 5б: несоответствие контрольной суммы → повторная выдача/контроль целостности.
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
